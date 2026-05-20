@@ -1,3 +1,6 @@
 {
-    "cmake.sourceDirectory": "C:/Users/ypp/Desktop/code_a/code/01 ROS/turn_on_wheeltec_robot"
+    "files.candidateGuessEncodings": [
+        "gb2312"
+    ],
+    "cmake.sourceDirectory": "D:/projects/01 ROS/turn_on_wheeltec_robot"
 }
