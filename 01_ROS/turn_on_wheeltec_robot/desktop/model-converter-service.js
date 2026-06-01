@@ -39,9 +39,9 @@ class ModelConverterService {
 
   defaultOutputDir() {
     if (this.app.isPackaged) {
-      return path.join(this.app.getPath('userData'), 'models', 'sage_cnn');
+      return path.join(this.app.getPath('userData'), 'models', 'sage_no_saf');
     }
-    return path.join(__dirname, 'models', 'sage_cnn');
+    return path.join(__dirname, 'models', 'sage_no_saf');
   }
 
   getStatus() {

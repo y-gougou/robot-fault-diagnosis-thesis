@@ -43,7 +43,10 @@ function(yp_resolve_onnxruntime_package_url out_var)
     endif()
   endif()
 
-  set(${out_var} "https://github.com/microsoft/onnxruntime/releases/download/v${YP_ONNXRUNTIME_VERSION}/${_asset}" PARENT_SCOPE)
+  set(${out_var}
+    "https://github.com/microsoft/onnxruntime/releases/download/v${YP_ONNXRUNTIME_VERSION}/${_asset}"
+    PARENT_SCOPE
+  )
 endfunction()
 
 function(yp_find_onnxruntime_root candidate out_var)
@@ -65,6 +68,7 @@ endfunction()
 
 function(yp_enable_onnxruntime ort_root)
   set(_include_dir "${ort_root}/include")
+
   if(WIN32)
     if(EXISTS "${ort_root}/lib/onnxruntime.lib")
       set(_import_lib "${ort_root}/lib/onnxruntime.lib")
@@ -73,6 +77,7 @@ function(yp_enable_onnxruntime ort_root)
     else()
       set(_import_lib "${ort_root}/lib/onnxruntime.lib")
     endif()
+
     set(_runtime_lib "${ort_root}/lib/onnxruntime.dll")
   elseif(APPLE)
     set(_import_lib "${ort_root}/lib/libonnxruntime.dylib")
@@ -88,10 +93,12 @@ function(yp_enable_onnxruntime ort_root)
   endif()
 
   add_library(onnxruntime::onnxruntime SHARED IMPORTED GLOBAL)
+
   set_target_properties(onnxruntime::onnxruntime PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES "${_include_dir}"
     IMPORTED_LOCATION "${_runtime_lib}"
   )
+
   if(WIN32)
     set_target_properties(onnxruntime::onnxruntime PROPERTIES
       IMPORTED_IMPLIB "${_import_lib}"
@@ -119,12 +126,16 @@ if(ONNXRUNTIME_ROOT)
 elseif(YP_FETCH_ONNXRUNTIME)
   yp_resolve_onnxruntime_package_url(_ort_url)
   message(STATUS "Fetching ONNX Runtime: ${_ort_url}")
+
   FetchContent_Declare(onnxruntime_prebuilt
     URL "${_ort_url}"
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
   )
+
   FetchContent_MakeAvailable(onnxruntime_prebuilt)
+
   yp_find_onnxruntime_root("${onnxruntime_prebuilt_SOURCE_DIR}" _fetched_ort_root)
+
   if(_fetched_ort_root)
     yp_enable_onnxruntime("${_fetched_ort_root}")
   else()

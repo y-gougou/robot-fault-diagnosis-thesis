@@ -28,7 +28,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path(__file__).resolve().parents[2] / "models" / "sage_cnn",
+        default=Path(__file__).resolve().parents[2] / "models" / "sage_no_saf",
     )
     parser.add_argument("--opset", type=int, default=17)
     parser.add_argument("--name", default="SAGE-CNN selected")
@@ -72,7 +72,7 @@ def main() -> int:
 
     checkpoint = torch.load(str(ckpt_path), map_location="cpu")
     state_dict = checkpoint.get("model_state_dict", checkpoint)
-    model = build_model("sage_cnn", input_channels=15, num_classes=4)
+    model = build_model("sage_no_saf", input_channels=15, num_classes=4)
     model.load_state_dict(state_dict)
     model.eval()
 

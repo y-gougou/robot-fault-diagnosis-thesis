@@ -27,9 +27,9 @@ class InferenceService {
 
   defaultManifestPath() {
     if (this.app.isPackaged) {
-      return path.join(process.resourcesPath, 'models', 'sage_cnn', 'model_manifest.json');
+      return path.join(process.resourcesPath, 'models', 'sage_no_saf', 'model_manifest.json');
     }
-    return path.join(__dirname, 'models', 'sage_cnn', 'model_manifest.json');
+    return path.join(__dirname, 'models', 'sage_no_saf', 'model_manifest.json');
   }
 
   resolveManifestPath(manifestPath) {
