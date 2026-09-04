@@ -828,6 +828,7 @@
     state.faultAlarm.lastAt = '';
     state.faultAlarm.detail = null;
     updateFaultAlarmDom();
+    resetInferenceWindow('fault_alarm_reset');
     if (opts.log && wasLatched) {
       addLog(opts.log, opts.cls || 'event-subscribed');
       dbAddSyncEvent(opts.eventType || 'fault_alarm_reset', { reason: opts.reason || 'manual', at: new Date().toISOString() });
@@ -901,6 +902,11 @@
       return;
     }
 
+    if (alarm.latched) {
+      updateFaultAlarmDom();
+      return;
+    }
+
     var now = new Date().toISOString();
     if (alarm.faultClass !== className) {
       alarm.consecutive = 0;
@@ -912,11 +918,6 @@
     alarm.confidence = result.confidence == null ? null : Number(result.confidence);
     alarm.lastAt = now;
 
-    if (alarm.latched) {
-      alarm.detail = faultAlarmDetail(result, now);
-      updateFaultAlarmDom();
-      return;
-    }
     if (alarm.consecutive >= alarm.threshold) {
       latchFaultAlarm(result, now);
       return;
@@ -963,6 +964,7 @@
     updateInferenceDom();
 
     if (inf.rows.length < inf.windowSize || inf.samplesSincePredict < inf.stepSize || inf.pending) return;
+    if (state.faultAlarm.latched) return;
     inf.samplesSincePredict = 0;
     runInferencePredict(inf.rows.slice());
   }

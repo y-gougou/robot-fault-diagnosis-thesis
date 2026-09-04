@@ -183,4 +183,5 @@ class turn_on_robot
         static const int SERIAL_BUF_SIZE = 256;
         uint8_t serial_buf_[SERIAL_BUF_SIZE];
         int serial_buf_len_;
+};
 #endif
