@@ -10,9 +10,9 @@
 
 ## 项目工作
 
-- **传感器与机器人链路：**保留电流板固件、上位机及标定工具，结合底盘串口、里程计、轮速与 IMU，在 ROS 中采集并记录 CSV；采集实现见 [data_collector.py](01_ROS/turn_on_wheeltec_robot/scripts/data_collector.py)。
-- **故障诊断实验：**以里程计速度 3、轮速 3、IMU 6、电流 3 共 15 个特征构造滑动窗口，保存 SAGE-CNN、消融变体与 CNN/MLP/LSTM/BiLSTM 等对比实验；包括主工况、跨速度泛化与部署鲁棒性三个实验流程。
-- **推理衔接：**保存 ONNX/PT、scaler、标签与特征配置，并提供桌面推理接口、回放和后处理代码。研究结果与部署选择分别记录，便于追溯使用的模型版本。
+- **传感器与机器人链路：** 保留电流板固件、上位机及标定工具，结合底盘串口、里程计、轮速与 IMU，在 ROS 中采集并记录 CSV；采集实现见 [data_collector.py](01_ROS/turn_on_wheeltec_robot/scripts/data_collector.py)。
+- **故障诊断实验：** 以里程计速度 3、轮速 3、IMU 6、电流 3 共 15 个特征构造滑动窗口，保存 SAGE-CNN、消融变体与 CNN/MLP/LSTM/BiLSTM 等对比实验；包括主工况、跨速度泛化与部署鲁棒性三个实验流程。
+- **推理衔接：** 保存 ONNX/PT、scaler、标签与特征配置，并提供桌面推理接口、回放和后处理代码。研究结果与部署选择分别记录，便于追溯使用的模型版本。
 
 ## 系统与四个子模块
 
@@ -50,9 +50,9 @@ flowchart TD
 
 ## 部署与已知限制
 
-- **模型变体需区分。**当前研究导出配置选择 `sage_no_saf / run_03`，依据是该变体各轮中的验证集 Macro F1；它与上表完整 `sage_cnn` 的统计口径不同。[导出配置](04%20last%20dance/last%20dance/ypmodel/results_deployment_robust/export/inference_config.json) 与 [桌面默认入口](01_ROS/turn_on_wheeltec_robot/desktop/inference-service.js) 可核查。桌面同时保留两套模型目录，默认指向 `sage_no_saf`，有效的自定义 manifest 可覆盖默认选择。
-- **标签与协议有历史差异。**部署标签为 `0 normal / 1 wheel_slip / 2 drive_abnormal / 3 shaft_eccentricity`，旧采集文档的 1/2 编号不同。电流板当前默认 FireWater 文本协议，而独立 HostApp/ROS 驱动使用二进制解析，连接前需统一协议、字段与校验。
-- **复现需要配套版本。**权重、特征顺序、scaler、标签和后处理配置应配套使用；本仓库 ROS 快照与维护平台有代码差异，同名 ROS 包不能同时放入一个 catkin 工作空间。部分旧实验总结中的默认模型描述已过时。
+- **模型变体需区分。** 当前研究导出配置选择 `sage_no_saf / run_03`，依据是该变体各轮中的验证集 Macro F1；它与上表完整 `sage_cnn` 的统计口径不同。[导出配置](04%20last%20dance/last%20dance/ypmodel/results_deployment_robust/export/inference_config.json) 与 [桌面默认入口](01_ROS/turn_on_wheeltec_robot/desktop/inference-service.js) 可核查。桌面同时保留两套模型目录，默认指向 `sage_no_saf`，有效的自定义 manifest 可覆盖默认选择。
+- **标签与协议有历史差异。** 部署标签为 `0 normal / 1 wheel_slip / 2 drive_abnormal / 3 shaft_eccentricity`，旧采集文档的 1/2 编号不同。电流板当前默认 FireWater 文本协议，而独立 HostApp/ROS 驱动使用二进制解析，连接前需统一协议、字段与校验。
+- **复现需要配套版本。** 权重、特征顺序、scaler、标签和后处理配置应配套使用；本仓库 ROS 快照与维护平台有代码差异，同名 ROS 包不能同时放入一个 catkin 工作空间。部分旧实验总结中的默认模型描述已过时。
 
 详细命令、协议差异、模型配置、历史分支和资源说明均保存在 [完整技术说明](docs/project-guide.md)。本次仅核对并调整文档，未重训、重新编译、烧录或完成新的实车验证。
 
