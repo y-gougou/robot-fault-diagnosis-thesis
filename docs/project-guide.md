@@ -56,7 +56,7 @@ uv run ch4-current
 roslaunch ch4_current_sensor sensor.launch port:=/dev/ttyUSB0 baudrate:=115200
 ```
 
-**协议需要先统一：**当前固件 `uart_protocol.h` 中 `UART_PROTOCOL_TYPE=1`，选择 FireWater 文本协议，实际电流包为三个有效通道；独立 HostApp 的 `protocol.py` 与独立 ROS 驱动的 `sensor_node.py` 使用 `0xAA 0x55` 二进制帧解析。HostApp 旧 README 的“自动识别两种协议”描述与当前代码不一致。切换到二进制时仍须检查字段数量、长度和校验规则，不能只改开关就认定兼容。主 ROS 包自己的 current reader 则对应文本电流帧。
+**协议需要先统一：** 当前固件 `uart_protocol.h` 中 `UART_PROTOCOL_TYPE=1`，选择 FireWater 文本协议，实际电流包为三个有效通道；独立 HostApp 的 `protocol.py` 与独立 ROS 驱动的 `sensor_node.py` 使用 `0xAA 0x55` 二进制帧解析。HostApp 旧 README 的“自动识别两种协议”描述与当前代码不一致。切换到二进制时仍须检查字段数量、长度和校验规则，不能只改开关就认定兼容。主 ROS 包自己的 current reader 则对应文本电流帧。
 
 底盘工程位于 `03 omi_car/`，使用 STM32F4、FreeRTOS 和 Keil AC5/EIDE；入口为 `USER/main.c`，控制与状态位于 `BALANCE/`。编译和硬件设置见该子目录 README。底盘串口、角度控制、轮速及故障配置扩展需要与上位机协议匹配；本次仓库整理未进行编译、烧录或实车验证。
 
